@@ -2,175 +2,79 @@
 <html lang="de">
 <head>
   <meta charset="UTF-8">
-  <title>BroMessenger – WhatsApp Style</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Deine Musik-App, Digga</title>
   <style>
-    body {
-      background: #ece5dd;
-      font-family: 'Segoe UI', sans-serif;
-      margin: 0; padding: 0;
-      display: flex; justify-content: center; align-items: center; height: 100vh;
-    }
-    #container {
-      background: #fff;
-      box-shadow: 0 0 16px #bbb;
-      border-radius: 12px;
-      width: 100%;
-      max-width: 420px;
-      min-height: 580px;
-      display: flex;
-      flex-direction: column;
-      overflow: hidden;
-    }
-    #header {
-      background: #075e54;
-      color: #fff;
-      padding: 16px;
-      font-size: 1.4em;
-      font-weight: bold;
-      letter-spacing: 1px;
-    }
-    #chat {
-      flex: 1;
-      background: #ece5dd;
-      padding: 14px 8px 8px 8px;
-      overflow-y: auto;
-      display: flex;
-      flex-direction: column;
-    }
-    .msg-row {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-      margin-bottom: 12px;
-    }
-    .msg-row.me {
-      align-items: flex-end;
-    }
-    .msg-bubble {
-      background: #dcf8c6;
-      color: #222;
-      border-radius: 7px 7px 0 7px;
-      padding: 7px 12px;
-      max-width: 75%;
-      font-size: 1em;
-      box-shadow: 0 1px 3px #c1c1c1;
-      margin-bottom: 2px;
-      word-break: break-word;
-    }
-    .msg-row.me .msg-bubble {
-      background: #e1ffc7;
-      border-radius: 7px 7px 7px 0;
-    }
-    .msg-meta {
-      color: #888;
-      font-size: 0.85em;
-      margin-top: 2px;
-      margin-left: 4px;
-      margin-right: 4px;
-    }
-    #input-area {
-      display: flex;
-      background: #f7f7f7;
-      padding: 10px;
-      border-top: 1px solid #ece5dd;
-    }
-    #name, #nummer, #msg {
-      border: none;
-      border-radius: 8px;
-      padding: 10px;
-      margin-right: 6px;
-      font-size: 1em;
-      background: #f0f0f0;
-      color: #222;
-      outline: none;
-    }
-    #msg {
-      flex: 1;
-      min-width: 0;
-    }
-    #send-btn, #emoji-btn {
-      background: #075e54;
-      color: #fff;
-      border: none;
-      border-radius: 8px;
-      padding: 10px 14px;
-      font-size: 1.2em;
-      cursor: pointer;
-      margin-left: 3px;
-      transition: background .15s;
-    }
-    #send-btn:hover, #emoji-btn:hover {
-      background: #128c7e;
-    }
-    @media (max-width: 480px) {
-      #container { min-height: 100vh; max-width: 100vw; border-radius: 0; }
-    }
+    body { font-family: Arial, sans-serif; background: #181818; color: #fff; }
+    .player { margin-top: 20px; }
+    .track-list { margin-top: 10px; }
+    button { background: #282828; color: #fff; border: none; border-radius: 6px; padding: 8px 16px; margin: 5px;}
+    input[type="file"] { color: #fff; }
+    .header { font-size: 1.6em; margin-bottom: 10px; letter-spacing: 1px;}
   </style>
 </head>
 <body>
-  <div id="container">
-    <div id="header">BroMessenger</div>
-    <div style="padding: 8px 10px 0 10px; background:#f7f7f7;">
-      <input id="name" placeholder="Name" style="width:48%">
-      <input id="nummer" placeholder="Telefonnummer" style="width:48%">
-    </div>
-    <div id="chat"></div>
-    <div id="input-area">
-      <button id="emoji-btn" onclick="insertEmoji()">😎</button>
-      <input id="msg" placeholder="Nachricht schreiben..." autocomplete="off">
-      <button id="send-btn" onclick="sendMsg()">➤</button>
+  <div class="header">🎵 Musik-App Deluxe by Steve 😎</div>
+  <input type="file" id="fileInput" multiple accept="audio/*">
+  <div class="track-list" id="trackList"></div>
+  <div class="player" id="playerDiv" style="display:none;">
+    <audio id="audioPlayer" controls></audio>
+    <div>
+      <button onclick="prevTrack()">Zurück</button>
+      <button onclick="nextTrack()">Weiter</button>
     </div>
   </div>
+
   <script>
-    let server = "http://127.0.0.1:5000"; // <-- Hier Server-IP eintragen!
-    let lastName = "";
-    let lastNum = "";
+    let tracks = [];
+    let currentTrack = 0;
 
-    function insertEmoji() {
-      document.getElementById("msg").value += "😎";
-    }
+    document.getElementById('fileInput').addEventListener('change', function(e) {
+      tracks = Array.from(e.target.files);
+      currentTrack = 0;
+      showTracks();
+      if (tracks.length > 0) {
+        playTrack(0);
+        document.getElementById('playerDiv').style.display = '';
+      }
+    });
 
-    function sendMsg() {
-      let name = document.getElementById("name").value.trim();
-      let nummer = document.getElementById("nummer").value.trim();
-      let msg = document.getElementById("msg").value.trim();
-      if (!name || !nummer || !msg) return;
-      lastName = name; lastNum = nummer;
-      fetch(server + "/send", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ user: nummer, name: name, msg: msg })
-      }).then(() => {
-        document.getElementById("msg").value = "";
-        loadChat();
+    function showTracks() {
+      const listDiv = document.getElementById('trackList');
+      listDiv.innerHTML = '';
+      tracks.forEach((track, i) => {
+        listDiv.innerHTML += `
+          <div style="margin:6px;">
+            <span>${i+1}. ${track.name}</span>
+            <button onclick="playTrack(${i})">Play</button>
+          </div>`;
       });
     }
 
-    function loadChat() {
-      fetch(server + "/get")
-        .then(r => r.json())
-        .then(data => {
-          let myName = document.getElementById("name").value.trim();
-          let myNum = document.getElementById("nummer").value.trim();
-          let chat = "";
-          data.forEach(m => {
-            let itsMe = (m.name === myName && m.user === myNum);
-            chat += <div class="msg-row${itsMe ? " me": ""}"> +
-              <div class="msg-bubble">${m.msg}</div> +
-              <div class="msg-meta">${m.name} (${m.user})</div> +
-            </div>;
-          });
-          document.getElementById("chat").innerHTML = chat;
-          document.getElementById("chat").scrollTop = 99999;
-        });
+    function playTrack(idx) {
+      currentTrack = idx;
+      const audio = document.getElementById('audioPlayer');
+      audio.src = URL.createObjectURL(tracks[idx]);
+      audio.play();
     }
 
-    document.getElementById("msg").addEventListener("keydown", function(e) {
-      if (e.key === "Enter") sendMsg();
-    });
-    setInterval(loadChat, 1200);
-    loadChat();
+    function nextTrack() {
+      if (currentTrack < tracks.length - 1) {
+        playTrack(currentTrack + 1);
+      } else {
+        playTrack(0);
+      }
+    }
+
+    function prevTrack() {
+      if (currentTrack > 0) {
+        playTrack(currentTrack - 1);
+      } else {
+        playTrack(tracks.length - 1);
+      }
+    }
+
+    // Optional: automatisches Weiter nach Song-Ende
+    document.getElementById('audioPlayer').addEventListener('ended', nextTrack);
   </script>
 </body>
 </html>
