@@ -2,90 +2,164 @@
 <html lang="de">
 <head>
   <meta charset="UTF-8">
-  <title>Spotiphy by Steve</title>
+  <title>BroMessenger – Login</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
-    body { background: #191414; color: #fff; font-family: Arial, sans-serif; margin:0; }
-    .header { padding: 20px 30px; font-size: 2em; font-weight: bold; letter-spacing: 2px; background: #1db954; color: #191414; }
-    .playlist { padding: 20px 30px; }
-    .track { background: #282828; border-radius: 12px; margin-bottom: 14px; padding: 18px; display: flex; align-items: center;}
-    .track img { height: 56px; width: 56px; border-radius: 8px; margin-right: 18px;}
-    .track-info { flex: 1; }
-    .track-title { font-size: 1.2em; font-weight: bold;}
-    .track-artist { font-size: 0.98em; color: #b3b3b3;}
-    .track-btn { background: #1db954; border: none; border-radius: 4px; color: #191414; font-weight: bold; margin-left: 18px; padding: 8px 18px; cursor: pointer;}
-    audio { width: 80%; margin: 30px auto 0 auto; display: block; }
+    body { background: #ece5dd; font-family: 'Segoe UI', sans-serif; }
+    #container { background: #fff; box-shadow: 0 0 16px #bbb; border-radius: 12px; width: 100%; max-width: 420px; min-height: 580px; margin: 40px auto 0 auto; overflow: hidden; }
+    #header { background: #075e54; color: #fff; padding: 18px; font-size: 1.4em; font-weight: bold; letter-spacing: 1px; text-align: center;}
+    #login-area, #register-area, #chat-area { padding: 28px 24px 22px 24px; display: none; }
+    #chat-area { padding: 8px 10px 0 10px; background:#f7f7f7;}
+    .input { width: 100%; padding: 12px; border-radius: 8px; border: none; margin-bottom: 12px; background: #f0f0f0; color: #222; outline: none;}
+    .btn { background: #075e54; color: #fff; border: none; border-radius: 8px; padding: 10px 14px; font-size: 1.1em; cursor: pointer; margin-right: 6px;}
+    .btn:hover { background: #128c7e; }
+    #chat { width: 100%; height: 340px; background: #ece5dd; margin-bottom: 10px; border-radius: 10px; padding: 10px; overflow-y: auto;}
+    .msg-row { display: flex; flex-direction: column; align-items: flex-start; margin-bottom: 12px; }
+    .msg-row.me { align-items: flex-end;}
+    .msg-bubble { background: #dcf8c6; color: #222; border-radius: 7px 7px 0 7px; padding: 7px 12px; max-width: 75%; font-size: 1em; box-shadow: 0 1px 3px #c1c1c1; margin-bottom: 2px; word-break: break-word;}
+    .msg-row.me .msg-bubble { background: #e1ffc7; border-radius: 7px 7px 7px 0; }
+    .msg-meta { color: #888; font-size: 0.85em; margin-top: 2px; margin-left: 4px; margin-right: 4px; }
+    #input-area { display: flex; background: #f7f7f7; padding: 10px; border-top: 1px solid #ece5dd;}
+    #msg { border: none; border-radius: 8px; padding: 10px; font-size: 1em; background: #f0f0f0; color: #222; outline: none; flex: 1;}
+    #send-btn, #emoji-btn { background: #075e54; color: #fff; border: none; border-radius: 8px; padding: 10px 14px; font-size: 1.2em; cursor: pointer; margin-left: 3px;}
+    #send-btn:hover, #emoji-btn:hover { background: #128c7e;}
+    .err { color: #b90000; margin-bottom: 10px;}
+    .link-btn { color: #075e54; background: none; border: none; text-decoration: underline; cursor:pointer;}
   </style>
 </head>
 <body>
-  <div class="header">Spotiphy by Steve 😎</div>
-  <div class="playlist" id="playlist">
-    <!-- Tracks kommen hier rein -->
+  <div id="container">
+    <div id="header">BroMessenger</div>
+    <!-- Login Area -->
+    <div id="login-area">
+      <div class="err" id="login-err"></div>
+      <input class="input" id="login-nummer" placeholder="Telefonnummer">
+      <input class="input" id="login-pw" type="password" placeholder="Passwort">
+      <button class="btn" onclick="doLogin()">Einloggen</button>
+      <button class="link-btn" onclick="showRegister()">Noch kein Account?</button>
+    </div>
+    <!-- Register Area -->
+    <div id="register-area">
+      <div class="err" id="register-err"></div>
+      <input class="input" id="register-name" placeholder="Name">
+      <input class="input" id="register-nummer" placeholder="Telefonnummer">
+      <input class="input" id="register-pw" type="password" placeholder="Passwort">
+      <button class="btn" onclick="doRegister()">Registrieren</button>
+      <button class="link-btn" onclick="showLogin()">Zurück zum Login</button>
+    </div>
+    <!-- Chat Area -->
+    <div id="chat-area">
+      <div id="chat"></div>
+      <div id="input-area">
+        <button id="emoji-btn" onclick="insertEmoji()">😎</button>
+        <input id="msg" placeholder="Nachricht schreiben..." autocomplete="off">
+        <button id="send-btn" onclick="sendMsg()">➤</button>
+      </div>
+    </div>
   </div>
-  <audio id="audioPlayer" controls style="display:none;"></audio>
-
   <script>
-    // Demo-Tracks! Eigene MP3-Links eintragen, z.B. aus Free-Music-Archive!
-    const tracks = [
-      {
-        title: "Dreams (Demo)",
-        artist: "Joakim Karud",
-        url: "https://cdn.pixabay.com/audio/2022/07/26/audio_124bfa9c8e.mp3",
-        cover: "https://i.imgur.com/8kmcH7l.png"
-      },
-      {
-        title: "On & On (Demo)",
-        artist: "Cartoon feat. Daniel Levi",
-        url: "https://cdn.pixabay.com/audio/2023/04/12/audio_14448c542b.mp3",
-        cover: "https://i.imgur.com/r5H6G5Z.png"
-      },
-      {
-        title: "Good Times (Demo)",
-        artist: "Yung Logos",
-        url: "https://cdn.pixabay.com/audio/2023/03/31/audio_1279bc0a93.mp3",
-        cover: "https://i.imgur.com/64i1UL8.png"
-      }
-    ];
+    // === CONFIG ===
+    let server = "http://DEINE-SERVER-IP:5000"; // <-- Hier IP eintragen!
 
-    let current = 0;
-    const player = document.getElementById('audioPlayer');
-    const playlistDiv = document.getElementById('playlist');
+    // === STATE ===
+    let myNummer = "", myName = "";
 
-    function showTracks() {
-      playlistDiv.innerHTML = '';
-      tracks.forEach((track, i) => {
-        playlistDiv.innerHTML += `
-          <div class="track">
-            <img src="${track.cover}">
-            <div class="track-info">
-              <div class="track-title">${track.title}</div>
-              <div class="track-artist">${track.artist}</div>
-            </div>
-            <button class="track-btn" onclick="playTrack(${i})">${current === i && !player.paused ? 'Pause' : 'Play'}</button>
-          </div>`;
+    // === Auth ===
+    function showLogin() {
+      document.getElementById('login-area').style.display = 'block';
+      document.getElementById('register-area').style.display = 'none';
+      document.getElementById('chat-area').style.display = 'none';
+    }
+    function showRegister() {
+      document.getElementById('login-area').style.display = 'none';
+      document.getElementById('register-area').style.display = 'block';
+      document.getElementById('chat-area').style.display = 'none';
+    }
+    function showChat() {
+      document.getElementById('login-area').style.display = 'none';
+      document.getElementById('register-area').style.display = 'none';
+      document.getElementById('chat-area').style.display = 'block';
+    }
+    showLogin();
+
+    // Login
+    function doLogin() {
+      let nummer = document.getElementById("login-nummer").value.trim();
+      let pw = document.getElementById("login-pw").value.trim();
+      document.getElementById("login-err").textContent = "";
+      fetch(server + "/login", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({nummer, pw})
+      })
+      .then(r => r.json())
+      .then(res => {
+        if (res.success) {
+          myNummer = nummer; myName = res.name;
+          showChat(); loadChat();
+        } else {
+          document.getElementById("login-err").textContent = res.error || "Login fehlgeschlagen!";
+        }
+      });
+    }
+    // Register
+    function doRegister() {
+      let nummer = document.getElementById("register-nummer").value.trim();
+      let pw = document.getElementById("register-pw").value.trim();
+      let name = document.getElementById("register-name").value.trim();
+      document.getElementById("register-err").textContent = "";
+      fetch(server + "/register", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({nummer, name, pw})
+      })
+      .then(r => r.json())
+      .then(res => {
+        if (res.success) {
+          alert("Account erstellt, jetzt einloggen!");
+          showLogin();
+        } else {
+          document.getElementById("register-err").textContent = res.error || "Registrierung fehlgeschlagen!";
+        }
       });
     }
 
-    window.playTrack = function(idx) {
-      if (current === idx && !player.paused) {
-        player.pause();
-      } else {
-        current = idx;
-        player.src = tracks[idx].url;
-        player.style.display = '';
-        player.play();
-      }
-      showTracks();
+    // === Chat ===
+    function insertEmoji() {
+      document.getElementById("msg").value += "😎";
     }
-
-    player.addEventListener('ended', () => {
-      current = (current + 1) % tracks.length;
-      playTrack(current);
+    function sendMsg() {
+      let msg = document.getElementById("msg").value.trim();
+      if (!msg || !myNummer) return;
+      fetch(server + "/send", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({nummer: myNummer, msg})
+      }).then(() => {
+        document.getElementById("msg").value = "";
+        loadChat();
+      });
+    }
+    function loadChat() {
+      fetch(server + "/get").then(r => r.json()).then(data => {
+        let chat = "";
+        data.forEach(m => {
+          let itsMe = (m.nummer === myNummer);
+          chat += `<div class="msg-row${itsMe ? " me": ""}">` +
+            `<div class="msg-bubble">${m.msg}</div>` +
+            `<div class="msg-meta">${m.name} (${m.nummer})</div>` +
+          `</div>`;
+        });
+        document.getElementById("chat").innerHTML = chat;
+        document.getElementById("chat").scrollTop = 99999;
+      });
+    }
+    document.getElementById("msg").addEventListener("keydown", function(e) {
+      if (e.key === "Enter") sendMsg();
     });
-
-    player.addEventListener('play', showTracks);
-    player.addEventListener('pause', showTracks);
-
-    showTracks();
+    setInterval(function() {
+      if (document.getElementById("chat-area").style.display === "block") loadChat();
+    }, 1200);
   </script>
 </body>
 </html>
