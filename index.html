@@ -2,164 +2,284 @@
 <html lang="de">
 <head>
   <meta charset="UTF-8">
-  <title>BroMessenger – Login</title>
+  <title>DexorEH Hub FAQ</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css?family=Montserrat:700,400&display=swap" rel="stylesheet">
   <style>
-    body { background: #ece5dd; font-family: 'Segoe UI', sans-serif; }
-    #container { background: #fff; box-shadow: 0 0 16px #bbb; border-radius: 12px; width: 100%; max-width: 420px; min-height: 580px; margin: 40px auto 0 auto; overflow: hidden; }
-    #header { background: #075e54; color: #fff; padding: 18px; font-size: 1.4em; font-weight: bold; letter-spacing: 1px; text-align: center;}
-    #login-area, #register-area, #chat-area { padding: 28px 24px 22px 24px; display: none; }
-    #chat-area { padding: 8px 10px 0 10px; background:#f7f7f7;}
-    .input { width: 100%; padding: 12px; border-radius: 8px; border: none; margin-bottom: 12px; background: #f0f0f0; color: #222; outline: none;}
-    .btn { background: #075e54; color: #fff; border: none; border-radius: 8px; padding: 10px 14px; font-size: 1.1em; cursor: pointer; margin-right: 6px;}
-    .btn:hover { background: #128c7e; }
-    #chat { width: 100%; height: 340px; background: #ece5dd; margin-bottom: 10px; border-radius: 10px; padding: 10px; overflow-y: auto;}
-    .msg-row { display: flex; flex-direction: column; align-items: flex-start; margin-bottom: 12px; }
-    .msg-row.me { align-items: flex-end;}
-    .msg-bubble { background: #dcf8c6; color: #222; border-radius: 7px 7px 0 7px; padding: 7px 12px; max-width: 75%; font-size: 1em; box-shadow: 0 1px 3px #c1c1c1; margin-bottom: 2px; word-break: break-word;}
-    .msg-row.me .msg-bubble { background: #e1ffc7; border-radius: 7px 7px 7px 0; }
-    .msg-meta { color: #888; font-size: 0.85em; margin-top: 2px; margin-left: 4px; margin-right: 4px; }
-    #input-area { display: flex; background: #f7f7f7; padding: 10px; border-top: 1px solid #ece5dd;}
-    #msg { border: none; border-radius: 8px; padding: 10px; font-size: 1em; background: #f0f0f0; color: #222; outline: none; flex: 1;}
-    #send-btn, #emoji-btn { background: #075e54; color: #fff; border: none; border-radius: 8px; padding: 10px 14px; font-size: 1.2em; cursor: pointer; margin-left: 3px;}
-    #send-btn:hover, #emoji-btn:hover { background: #128c7e;}
-    .err { color: #b90000; margin-bottom: 10px;}
-    .link-btn { color: #075e54; background: none; border: none; text-decoration: underline; cursor:pointer;}
+    :root {
+      --main-bg: #171a21;
+      --card-bg: #23272f;
+      --accent: #22c55e;
+      --txt: #fff;
+      --txt2: #b8c1d6;
+      --shadow: 0 4px 28px rgba(0,0,0,0.13);
+    }
+    body {
+      margin: 0;
+      font-family: 'Montserrat', Arial, sans-serif;
+      background: linear-gradient(135deg, #101318 60%, #212837 100%);
+      min-height: 100vh;
+      color: var(--txt);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 0 10px 60px 10px;
+    }
+    .container {
+      width: 100%;
+      max-width: 680px;
+      margin: 38px 0 0 0;
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      gap: 34px;
+    }
+    .headline {
+      font-size: 2.4rem;
+      font-weight: 700;
+      letter-spacing: -1.3px;
+      color: var(--accent);
+      text-shadow: 0 4px 16px #14171744;
+      margin-bottom: 8px;
+    }
+    .subline {
+      color: var(--txt2);
+      font-size: 1.2rem;
+      margin-bottom: 12px;
+      letter-spacing: 0.1em;
+    }
+    .loader-card {
+      background: var(--card-bg);
+      border-radius: 18px;
+      box-shadow: var(--shadow);
+      padding: 26px 22px;
+      margin-bottom: 5px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 16px;
+      position: relative;
+    }
+    .loader-label {
+      color: var(--accent);
+      font-weight: 600;
+      font-size: 1.06rem;
+      margin-bottom: 2px;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+    .loadstring-box {
+      font-family: 'Fira Mono', monospace, monospace;
+      background: #101318;
+      border-radius: 13px;
+      font-size: 1.06rem;
+      color: #d0ffd0;
+      padding: 13px 12px;
+      margin-bottom: 0;
+      user-select: all;
+      letter-spacing: 0.01em;
+      border: 1.4px solid #28302e;
+      width: 100%;
+      word-break: break-all;
+    }
+    .copy-btn {
+      position: absolute;
+      top: 24px;
+      right: 22px;
+      background: var(--accent);
+      color: #101318;
+      border: none;
+      border-radius: 7px;
+      font-weight: 600;
+      font-size: 1rem;
+      padding: 6px 17px;
+      cursor: pointer;
+      transition: background .15s;
+      box-shadow: 0 2px 12px #19c16544;
+    }
+    .copy-btn:active {
+      background: #169b47;
+    }
+    .faq-section {
+      margin-top: 0px;
+      display: flex;
+      flex-direction: column;
+      gap: 0px;
+    }
+    .faq-title {
+      font-size: 1.36rem;
+      color: #a8ffcc;
+      margin-bottom: 12px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+    }
+    .faq-item {
+      background: var(--card-bg);
+      border-radius: 15px;
+      box-shadow: var(--shadow);
+      margin-bottom: 16px;
+      padding: 21px 19px 13px 19px;
+      transition: box-shadow .13s;
+      position: relative;
+      cursor: pointer;
+      border: 1.5px solid #2333254a;
+    }
+    .faq-item:hover {
+      box-shadow: 0 8px 32px #169b4760;
+      border: 1.5px solid var(--accent);
+    }
+    .faq-question {
+      font-weight: 600;
+      font-size: 1.09rem;
+      margin-bottom: 8px;
+      color: var(--accent);
+    }
+    .faq-answer {
+      color: var(--txt2);
+      font-size: 1.02rem;
+      padding-left: 4px;
+      padding-bottom: 7px;
+      line-height: 1.46;
+      user-select: text;
+      max-height: 1000px;
+      transition: max-height .22s;
+      overflow: hidden;
+    }
+    .faq-item.collapsed .faq-answer {
+      max-height: 0;
+      padding-bottom: 0;
+      overflow: hidden;
+      opacity: 0.01;
+      transition: max-height .19s, opacity .16s;
+    }
+    .faq-chevron {
+      position: absolute;
+      right: 20px;
+      top: 23px;
+      width: 18px;
+      height: 18px;
+      fill: #47fa91;
+      opacity: 0.55;
+      transition: transform .18s;
+    }
+    .faq-item.collapsed .faq-chevron {
+      transform: rotate(-90deg);
+      opacity: 0.19;
+    }
+    @media (max-width: 620px) {
+      .container { max-width: 98vw; }
+      .loader-card, .faq-item { padding: 17px 7vw; }
+    }
   </style>
 </head>
 <body>
-  <div id="container">
-    <div id="header">BroMessenger</div>
-    <!-- Login Area -->
-    <div id="login-area">
-      <div class="err" id="login-err"></div>
-      <input class="input" id="login-nummer" placeholder="Telefonnummer">
-      <input class="input" id="login-pw" type="password" placeholder="Passwort">
-      <button class="btn" onclick="doLogin()">Einloggen</button>
-      <button class="link-btn" onclick="showRegister()">Noch kein Account?</button>
+  <div class="container">
+    <div class="headline">DexorEH Hub Loader & FAQ</div>
+    <div class="subline">Alle wichtigen Infos, Loader und Troubleshooting auf einen Blick.</div>
+    <div class="loader-card">
+      <div class="loader-label">Loader</div>
+      <div class="loadstring-box" id="loadstring">loadstring(game:HttpGet("https://dexoreh.com/dexoreh.lua"))()</div>
+      <button class="copy-btn" id="copyBtn">Copy</button>
     </div>
-    <!-- Register Area -->
-    <div id="register-area">
-      <div class="err" id="register-err"></div>
-      <input class="input" id="register-name" placeholder="Name">
-      <input class="input" id="register-nummer" placeholder="Telefonnummer">
-      <input class="input" id="register-pw" type="password" placeholder="Passwort">
-      <button class="btn" onclick="doRegister()">Registrieren</button>
-      <button class="link-btn" onclick="showLogin()">Zurück zum Login</button>
-    </div>
-    <!-- Chat Area -->
-    <div id="chat-area">
-      <div id="chat"></div>
-      <div id="input-area">
-        <button id="emoji-btn" onclick="insertEmoji()">😎</button>
-        <input id="msg" placeholder="Nachricht schreiben..." autocomplete="off">
-        <button id="send-btn" onclick="sendMsg()">➤</button>
+    <div class="faq-section">
+      <div class="faq-title">FAQ – Häufige Fragen</div>
+      <div class="faq-item">
+        <div class="faq-question">Wie lade ich das Script bei Emergency Hamburg?</div>
+        <div class="faq-answer">
+          Kopier den Loader oben und ballere ihn einfach in deinen Executor rein. Script startet dann automatisch.
+        </div>
+        <svg class="faq-chevron" viewBox="0 0 20 20"><path d="M7.293 7.293a1 1 0 011.414 0L12 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"/></svg>
+      </div>
+      <div class="faq-item">
+        <div class="faq-question">Braucht man für DexorEH einen Key?</div>
+        <div class="faq-answer">
+          Nö, einfach reinpast’n und fertig. Kein Keysystem, kein Stress.
+        </div>
+        <svg class="faq-chevron" viewBox="0 0 20 20"><path d="M7.293 7.293a1 1 0 011.414 0L12 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"/></svg>
+      </div>
+      <div class="faq-item">
+        <div class="faq-question">Welche Executor funktionieren safe?</div>
+        <div class="faq-answer">
+          Synapse X, Evon, Delta, Kiwo und viele andere. Kostenlose wie KRNL oder Hydrogen sind manchmal gebannt, dann einfach was anderes nehmen.
+        </div>
+        <svg class="faq-chevron" viewBox="0 0 20 20"><path d="M7.293 7.293a1 1 0 011.414 0L12 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"/></svg>
+      </div>
+      <div class="faq-item">
+        <div class="faq-question">Was tun, wenn ich kicken werde?</div>
+        <div class="faq-answer">
+          Meistens Executor-Bug oder zu oft hintereinander teleportiert/gegrindet. Alt-Account nehmen und kurz chillen.
+        </div>
+        <svg class="faq-chevron" viewBox="0 0 20 20"><path d="M7.293 7.293a1 1 0 011.414 0L12 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"/></svg>
+      </div>
+      <div class="faq-item">
+        <div class="faq-question">Wie mache ich Safe Money mit AutoRob?</div>
+        <div class="faq-answer">
+          Toggle im Hub aktivieren, AFK chillen – dein Char raubt Bank & Club, verkauft das Zeug, serverhoppt und repeat. Einfacher geht’s nicht.
+        </div>
+        <svg class="faq-chevron" viewBox="0 0 20 20"><path d="M7.293 7.293a1 1 0 011.414 0L12 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"/></svg>
+      </div>
+      <div class="faq-item">
+        <div class="faq-question">Werden Troll-Features gebannt?</div>
+        <div class="faq-answer">
+          Nutzt du Trolling hart (z.B. alle crashen, zu obvious ESP), kann ein Admin dich mal bannen. Normal rumspielen ist aber fast immer safe.
+        </div>
+        <svg class="faq-chevron" viewBox="0 0 20 20"><path d="M7.293 7.293a1 1 0 011.414 0L12 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"/></svg>
+      </div>
+      <div class="faq-item">
+        <div class="faq-question">Warum funktioniert mein Silent Aim nicht?</div>
+        <div class="faq-answer">
+          Check mal Prediction & FOV Settings im Hub, sonst mal Executor neustarten oder den Server wechseln. Manchmal fixen kleine Settings alles.
+        </div>
+        <svg class="faq-chevron" viewBox="0 0 20 20"><path d="M7.293 7.293a1 1 0 011.414 0L12 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"/></svg>
+      </div>
+      <div class="faq-item">
+        <div class="faq-question">Was tun, wenn das Script updatet?</div>
+        <div class="faq-answer">
+          Loader oben benutzen – dann hast du immer die neueste Version, musst nix neu laden.
+        </div>
+        <svg class="faq-chevron" viewBox="0 0 20 20"><path d="M7.293 7.293a1 1 0 011.414 0L12 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"/></svg>
+      </div>
+      <div class="faq-item">
+        <div class="faq-question">Muss ich Premium zahlen?</div>
+        <div class="faq-answer">
+          Nein, DexorEH ist komplett kostenlos – Donations oder so sind freiwillig, aber alles Free.
+        </div>
+        <svg class="faq-chevron" viewBox="0 0 20 20"><path d="M7.293 7.293a1 1 0 011.414 0L12 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"/></svg>
+      </div>
+      <div class="faq-item">
+        <div class="faq-question">Wo bekomme ich Hilfe, wenn irgendwas buggt?</div>
+        <div class="faq-answer">
+          Einfach Discord joinen: <b>dizzy.gg/DEINSERVER</b> oder im TikTok Kommentarbereich schreiben. Community hilft immer schnell!
+        </div>
+        <svg class="faq-chevron" viewBox="0 0 20 20"><path d="M7.293 7.293a1 1 0 011.414 0L12 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"/></svg>
       </div>
     </div>
   </div>
   <script>
-    // === CONFIG ===
-    let server = "http://DEINE-SERVER-IP:5000"; // <-- Hier IP eintragen!
-
-    // === STATE ===
-    let myNummer = "", myName = "";
-
-    // === Auth ===
-    function showLogin() {
-      document.getElementById('login-area').style.display = 'block';
-      document.getElementById('register-area').style.display = 'none';
-      document.getElementById('chat-area').style.display = 'none';
-    }
-    function showRegister() {
-      document.getElementById('login-area').style.display = 'none';
-      document.getElementById('register-area').style.display = 'block';
-      document.getElementById('chat-area').style.display = 'none';
-    }
-    function showChat() {
-      document.getElementById('login-area').style.display = 'none';
-      document.getElementById('register-area').style.display = 'none';
-      document.getElementById('chat-area').style.display = 'block';
-    }
-    showLogin();
-
-    // Login
-    function doLogin() {
-      let nummer = document.getElementById("login-nummer").value.trim();
-      let pw = document.getElementById("login-pw").value.trim();
-      document.getElementById("login-err").textContent = "";
-      fetch(server + "/login", {
-        method: "POST",
-        headers: {"Content-Type": "application/json"},
-        body: JSON.stringify({nummer, pw})
-      })
-      .then(r => r.json())
-      .then(res => {
-        if (res.success) {
-          myNummer = nummer; myName = res.name;
-          showChat(); loadChat();
+    // Copy Button
+    document.getElementById('copyBtn').onclick = function() {
+      const str = document.getElementById('loadstring').innerText;
+      navigator.clipboard.writeText(str);
+      this.innerText = 'Copied!';
+      setTimeout(() => { this.innerText = 'Copy'; }, 1200);
+    };
+    // FAQ Collapsible
+    document.querySelectorAll('.faq-item').forEach(function(item){
+      item.classList.add('collapsed');
+      item.addEventListener('click', function(){
+        if(item.classList.contains('collapsed')) {
+          document.querySelectorAll('.faq-item').forEach(i=>i.classList.add('collapsed'));
+          item.classList.remove('collapsed');
         } else {
-          document.getElementById("login-err").textContent = res.error || "Login fehlgeschlagen!";
+          item.classList.add('collapsed');
         }
       });
-    }
-    // Register
-    function doRegister() {
-      let nummer = document.getElementById("register-nummer").value.trim();
-      let pw = document.getElementById("register-pw").value.trim();
-      let name = document.getElementById("register-name").value.trim();
-      document.getElementById("register-err").textContent = "";
-      fetch(server + "/register", {
-        method: "POST",
-        headers: {"Content-Type": "application/json"},
-        body: JSON.stringify({nummer, name, pw})
-      })
-      .then(r => r.json())
-      .then(res => {
-        if (res.success) {
-          alert("Account erstellt, jetzt einloggen!");
-          showLogin();
-        } else {
-          document.getElementById("register-err").textContent = res.error || "Registrierung fehlgeschlagen!";
-        }
-      });
-    }
-
-    // === Chat ===
-    function insertEmoji() {
-      document.getElementById("msg").value += "😎";
-    }
-    function sendMsg() {
-      let msg = document.getElementById("msg").value.trim();
-      if (!msg || !myNummer) return;
-      fetch(server + "/send", {
-        method: "POST",
-        headers: {"Content-Type": "application/json"},
-        body: JSON.stringify({nummer: myNummer, msg})
-      }).then(() => {
-        document.getElementById("msg").value = "";
-        loadChat();
-      });
-    }
-    function loadChat() {
-      fetch(server + "/get").then(r => r.json()).then(data => {
-        let chat = "";
-        data.forEach(m => {
-          let itsMe = (m.nummer === myNummer);
-          chat += `<div class="msg-row${itsMe ? " me": ""}">` +
-            `<div class="msg-bubble">${m.msg}</div>` +
-            `<div class="msg-meta">${m.name} (${m.nummer})</div>` +
-          `</div>`;
-        });
-        document.getElementById("chat").innerHTML = chat;
-        document.getElementById("chat").scrollTop = 99999;
-      });
-    }
-    document.getElementById("msg").addEventListener("keydown", function(e) {
-      if (e.key === "Enter") sendMsg();
     });
-    setInterval(function() {
-      if (document.getElementById("chat-area").style.display === "block") loadChat();
-    }, 1200);
+    // Open first FAQ by default
+    setTimeout(()=>{
+      let first = document.querySelector('.faq-item');
+      if(first) first.classList.remove('collapsed');
+    }, 150);
   </script>
 </body>
 </html>
