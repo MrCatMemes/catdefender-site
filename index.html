@@ -2,7 +2,7 @@
 <html lang="de">
 <head>
   <meta charset="UTF-8">
-  <title>DexorEH Hub FAQ</title>
+  <title>DexorEH Hub – FAQ & Loader</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://fonts.googleapis.com/css?family=Montserrat:700,400&display=swap" rel="stylesheet">
   <style>
@@ -23,59 +23,58 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 0 10px 60px 10px;
+      padding: 0 10px 70px 10px;
     }
     .container {
       width: 100%;
-      max-width: 680px;
-      margin: 38px 0 0 0;
+      max-width: 760px;
+      margin: 36px 0 0 0;
       box-sizing: border-box;
       display: flex;
       flex-direction: column;
-      gap: 34px;
+      gap: 38px;
     }
     .headline {
-      font-size: 2.4rem;
+      font-size: 2.2rem;
       font-weight: 700;
-      letter-spacing: -1.3px;
+      letter-spacing: -1.1px;
       color: var(--accent);
       text-shadow: 0 4px 16px #14171744;
-      margin-bottom: 8px;
+      margin-bottom: 7px;
     }
     .subline {
       color: var(--txt2);
-      font-size: 1.2rem;
-      margin-bottom: 12px;
-      letter-spacing: 0.1em;
+      font-size: 1.14rem;
+      margin-bottom: 15px;
+      letter-spacing: 0.08em;
     }
     .loader-card {
       background: var(--card-bg);
       border-radius: 18px;
       box-shadow: var(--shadow);
-      padding: 26px 22px;
-      margin-bottom: 5px;
+      padding: 26px 22px 22px 22px;
+      margin-bottom: 8px;
       display: flex;
       flex-direction: column;
       align-items: flex-start;
-      gap: 16px;
+      gap: 13px;
       position: relative;
     }
     .loader-label {
       color: var(--accent);
       font-weight: 600;
-      font-size: 1.06rem;
-      margin-bottom: 2px;
-      letter-spacing: .08em;
+      font-size: 1.07rem;
+      margin-bottom: 1px;
+      letter-spacing: .07em;
       text-transform: uppercase;
     }
     .loadstring-box {
       font-family: 'Fira Mono', monospace, monospace;
       background: #101318;
       border-radius: 13px;
-      font-size: 1.06rem;
+      font-size: 1.08rem;
       color: #d0ffd0;
       padding: 13px 12px;
-      margin-bottom: 0;
       user-select: all;
       letter-spacing: 0.01em;
       border: 1.4px solid #28302e;
@@ -84,8 +83,8 @@
     }
     .copy-btn {
       position: absolute;
-      top: 24px;
-      right: 22px;
+      top: 23px;
+      right: 21px;
       background: var(--accent);
       color: #101318;
       border: none;
@@ -107,9 +106,9 @@
       gap: 0px;
     }
     .faq-title {
-      font-size: 1.36rem;
+      font-size: 1.28rem;
       color: #a8ffcc;
-      margin-bottom: 12px;
+      margin-bottom: 16px;
       font-weight: 700;
       letter-spacing: 0.06em;
     }
@@ -117,169 +116,238 @@
       background: var(--card-bg);
       border-radius: 15px;
       box-shadow: var(--shadow);
-      margin-bottom: 16px;
-      padding: 21px 19px 13px 19px;
+      margin-bottom: 22px;
+      padding: 23px 20px 14px 21px;
       transition: box-shadow .13s;
       position: relative;
       cursor: pointer;
-      border: 1.5px solid #2333254a;
+      border: 1.4px solid #2333254a;
     }
     .faq-item:hover {
       box-shadow: 0 8px 32px #169b4760;
-      border: 1.5px solid var(--accent);
+      border: 1.4px solid var(--accent);
     }
     .faq-question {
       font-weight: 600;
       font-size: 1.09rem;
-      margin-bottom: 8px;
+      margin-bottom: 7px;
       color: var(--accent);
+      letter-spacing: .01em;
     }
     .faq-answer {
       color: var(--txt2);
-      font-size: 1.02rem;
-      padding-left: 4px;
+      font-size: 1.05rem;
+      padding-left: 2px;
       padding-bottom: 7px;
-      line-height: 1.46;
+      line-height: 1.52;
       user-select: text;
-      max-height: 1000px;
-      transition: max-height .22s;
+      max-height: 1100px;
+      transition: max-height .21s, opacity .19s;
       overflow: hidden;
+      opacity: 1;
     }
     .faq-item.collapsed .faq-answer {
       max-height: 0;
       padding-bottom: 0;
       overflow: hidden;
       opacity: 0.01;
-      transition: max-height .19s, opacity .16s;
+      transition: max-height .17s, opacity .12s;
     }
     .faq-chevron {
       position: absolute;
-      right: 20px;
-      top: 23px;
+      right: 19px;
+      top: 25px;
       width: 18px;
       height: 18px;
       fill: #47fa91;
-      opacity: 0.55;
-      transition: transform .18s;
+      opacity: 0.44;
+      transition: transform .18s, opacity .17s;
     }
     .faq-item.collapsed .faq-chevron {
       transform: rotate(-90deg);
-      opacity: 0.19;
+      opacity: 0.14;
     }
-    @media (max-width: 620px) {
+    @media (max-width: 660px) {
       .container { max-width: 98vw; }
-      .loader-card, .faq-item { padding: 17px 7vw; }
+      .loader-card, .faq-item { padding: 14px 5vw 10px 5vw; }
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <div class="headline">DexorEH Hub Loader & FAQ</div>
-    <div class="subline">Alle wichtigen Infos, Loader und Troubleshooting auf einen Blick.</div>
+    <div class="headline">DexorEH Loader & FAQ</div>
+    <div class="subline">Fragen und Antworten rund um die Nutzung. Für mehr Details oder Probleme einfach nach unten scrollen.</div>
     <div class="loader-card">
-      <div class="loader-label">Loader</div>
+      <div class="loader-label">Script Loader</div>
       <div class="loadstring-box" id="loadstring">loadstring(game:HttpGet("https://dexoreh.com/dexoreh.lua"))()</div>
       <button class="copy-btn" id="copyBtn">Copy</button>
     </div>
     <div class="faq-section">
       <div class="faq-title">FAQ – Häufige Fragen</div>
+
       <div class="faq-item">
-        <div class="faq-question">Wie lade ich das Script bei Emergency Hamburg?</div>
+        <div class="faq-question">Wie nutze ich DexorEH?</div>
         <div class="faq-answer">
-          Kopier den Loader oben und ballere ihn einfach in deinen Executor rein. Script startet dann automatisch.
+          Um DexorEH zu nutzen, kopieren Sie bitte den Loader-Code oben und fügen Sie ihn in einen unterstützten Roblox-Executor ein. Das Script lädt sich danach automatisch.
         </div>
         <svg class="faq-chevron" viewBox="0 0 20 20"><path d="M7.293 7.293a1 1 0 011.414 0L12 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"/></svg>
       </div>
+
       <div class="faq-item">
-        <div class="faq-question">Braucht man für DexorEH einen Key?</div>
+        <div class="faq-question">Für welche Spiele ist DexorEH gedacht?</div>
         <div class="faq-answer">
-          Nö, einfach reinpast’n und fertig. Kein Keysystem, kein Stress.
+          DexorEH wurde speziell für das Roblox-Spiel „Emergency Hamburg“ entwickelt. Andere Games werden zurzeit nicht unterstützt.
         </div>
         <svg class="faq-chevron" viewBox="0 0 20 20"><path d="M7.293 7.293a1 1 0 011.414 0L12 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"/></svg>
       </div>
+
       <div class="faq-item">
-        <div class="faq-question">Welche Executor funktionieren safe?</div>
+        <div class="faq-question">Wird ein Key benötigt?</div>
         <div class="faq-answer">
-          Synapse X, Evon, Delta, Kiwo und viele andere. Kostenlose wie KRNL oder Hydrogen sind manchmal gebannt, dann einfach was anderes nehmen.
+          Für DexorEH ist aktuell kein Key oder Keysystem notwendig. Nach dem Einfügen des Scripts kann die Nutzung direkt erfolgen.
         </div>
         <svg class="faq-chevron" viewBox="0 0 20 20"><path d="M7.293 7.293a1 1 0 011.414 0L12 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"/></svg>
       </div>
+
       <div class="faq-item">
-        <div class="faq-question">Was tun, wenn ich kicken werde?</div>
+        <div class="faq-question">Welche Executor werden empfohlen?</div>
         <div class="faq-answer">
-          Meistens Executor-Bug oder zu oft hintereinander teleportiert/gegrindet. Alt-Account nehmen und kurz chillen.
+          Die Nutzung wurde mit Synapse X, Evon, Delta und Kiwo getestet. Andere bekannte Executor funktionieren in der Regel ebenfalls problemlos. Bitte beachten Sie die aktuellen Statusmeldungen zu Blacklists.
         </div>
         <svg class="faq-chevron" viewBox="0 0 20 20"><path d="M7.293 7.293a1 1 0 011.414 0L12 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"/></svg>
       </div>
+
       <div class="faq-item">
-        <div class="faq-question">Wie mache ich Safe Money mit AutoRob?</div>
+        <div class="faq-question">Ist DexorEH sicher zu benutzen?</div>
         <div class="faq-answer">
-          Toggle im Hub aktivieren, AFK chillen – dein Char raubt Bank & Club, verkauft das Zeug, serverhoppt und repeat. Einfacher geht’s nicht.
+          DexorEH wurde nach bestem Wissen für die Community entwickelt. Ein Restrisiko gibt es immer beim Nutzen von Scripts in Roblox – nur von vertrauenswürdigen Quellen nutzen!<br>
+          Empfohlen wird immer ein Alt-Account.
         </div>
         <svg class="faq-chevron" viewBox="0 0 20 20"><path d="M7.293 7.293a1 1 0 011.414 0L12 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"/></svg>
       </div>
+
       <div class="faq-item">
-        <div class="faq-question">Werden Troll-Features gebannt?</div>
+        <div class="faq-question">Was tun, wenn das Script nicht lädt?</div>
         <div class="faq-answer">
-          Nutzt du Trolling hart (z.B. alle crashen, zu obvious ESP), kann ein Admin dich mal bannen. Normal rumspielen ist aber fast immer safe.
+          Prüfe, ob du die aktuelle Loader-URL nutzt, dein Executor auf dem neuesten Stand ist und ob Roblox keine Verbindungsschwierigkeiten hat. 
+          Gegebenenfalls das Spiel und Script neu starten.
         </div>
         <svg class="faq-chevron" viewBox="0 0 20 20"><path d="M7.293 7.293a1 1 0 011.414 0L12 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"/></svg>
       </div>
+
       <div class="faq-item">
-        <div class="faq-question">Warum funktioniert mein Silent Aim nicht?</div>
+        <div class="faq-question">Kann ich DexorEH auf dem Handy nutzen?</div>
         <div class="faq-answer">
-          Check mal Prediction & FOV Settings im Hub, sonst mal Executor neustarten oder den Server wechseln. Manchmal fixen kleine Settings alles.
+          Nein, derzeit wird ausschließlich PC unterstützt. Mobile-Executoren funktionieren (noch) nicht für DexorEH.
         </div>
         <svg class="faq-chevron" viewBox="0 0 20 20"><path d="M7.293 7.293a1 1 0 011.414 0L12 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"/></svg>
       </div>
+
       <div class="faq-item">
-        <div class="faq-question">Was tun, wenn das Script updatet?</div>
+        <div class="faq-question">Gibt es regelmäßige Updates?</div>
         <div class="faq-answer">
-          Loader oben benutzen – dann hast du immer die neueste Version, musst nix neu laden.
+          Ja, der Hub wird regelmäßig aktualisiert, besonders nach Emergency Hamburg Updates. Bugfixes oder neue Features kommen meistens kurzfristig dazu.
         </div>
         <svg class="faq-chevron" viewBox="0 0 20 20"><path d="M7.293 7.293a1 1 0 011.414 0L12 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"/></svg>
       </div>
+
       <div class="faq-item">
-        <div class="faq-question">Muss ich Premium zahlen?</div>
+        <div class="faq-question">Kann ich für das Nutzen gebannt werden?</div>
         <div class="faq-answer">
-          Nein, DexorEH ist komplett kostenlos – Donations oder so sind freiwillig, aber alles Free.
+          Die Nutzung von Scripts ist immer mit einem Ban-Risiko verbunden. DexorEH hat Schutzmechanismen, aber ist nie 100% detected-safe! Immer auf eigene Gefahr.
         </div>
         <svg class="faq-chevron" viewBox="0 0 20 20"><path d="M7.293 7.293a1 1 0 011.414 0L12 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"/></svg>
       </div>
+
       <div class="faq-item">
-        <div class="faq-question">Wo bekomme ich Hilfe, wenn irgendwas buggt?</div>
+        <div class="faq-question">Wird mein Roblox-Account dadurch beeinflusst?</div>
         <div class="faq-answer">
-          Einfach Discord joinen: <b>dizzy.gg/DEINSERVER</b> oder im TikTok Kommentarbereich schreiben. Community hilft immer schnell!
+          DexorEH verändert nichts dauerhaft an deinem Roblox-Account. Nach Rejoin oder ohne Executor ist alles wieder wie vorher.
         </div>
         <svg class="faq-chevron" viewBox="0 0 20 20"><path d="M7.293 7.293a1 1 0 011.414 0L12 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"/></svg>
       </div>
+
+      <div class="faq-item">
+        <div class="faq-question">Wer steckt hinter DexorEH?</div>
+        <div class="faq-answer">
+          Der Hub wurde von Roblox-Usern aus der Szene entwickelt, um Emergency Hamburg Usern die bestmöglichen Features zu bieten.<br>
+          Support und Updates gibt’s nur über den offiziellen Discord.
+        </div>
+        <svg class="faq-chevron" viewBox="0 0 20 20"><path d="M7.293 7.293a1 1 0 011.414 0L12 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"/></svg>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question">Ich habe einen Bug gefunden – wohin melden?</div>
+        <div class="faq-answer">
+          Melde Bugs und Probleme einfach direkt über den Discord oder die im Hub angegebene Support-Kontaktmöglichkeit.
+        </div>
+        <svg class="faq-chevron" viewBox="0 0 20 20"><path d="M7.293 7.293a1 1 0 011.414 0L12 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"/></svg>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question">Wie kann ich updaten?</div>
+        <div class="faq-answer">
+          Immer einfach den Loader nutzen! Die aktuelle Version wird dann geladen. Ein manuelles Update ist nicht nötig.
+        </div>
+        <svg class="faq-chevron" viewBox="0 0 20 20"><path d="M7.293 7.293a1 1 0 011.414 0L12 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"/></svg>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question">Gibt es Einschränkungen bei Roblox-Events?</div>
+        <div class="faq-answer">
+          Manche temporären Event-Änderungen können bestimmte Funktionen beeinträchtigen. In solchen Fällen gibt es meistens zeitnah einen Fix per Hub-Update.
+        </div>
+        <svg class="faq-chevron" viewBox="0 0 20 20"><path d="M7.293 7.293a1 1 0 011.414 0L12 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"/></svg>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question">Warum laden einige Funktionen manchmal nicht?</div>
+        <div class="faq-answer">
+          Das kann an Roblox-Serverlag, Executor-Einstellungen oder Updates im Spiel liegen. Einfach neu ausführen oder Support fragen.
+        </div>
+        <svg class="faq-chevron" viewBox="0 0 20 20"><path d="M7.293 7.293a1 1 0 011.414 0L12 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"/></svg>
+      </div>
+      
+      <div class="faq-item">
+        <div class="faq-question">Wie kann ich Feedback geben?</div>
+        <div class="faq-answer">
+          Feedback und Feature-Wünsche werden am besten über Discord oder das offizielle GitHub angenommen.
+        </div>
+        <svg class="faq-chevron" viewBox="0 0 20 20"><path d="M7.293 7.293a1 1 0 011.414 0L12 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"/></svg>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question">Was, wenn ein Update den Hub blockiert?</div>
+        <div class="faq-answer">
+          Meistens gibt’s in wenigen Stunden einen Fix. Auf Discord werden solche Infos am schnellsten geteilt.
+        </div>
+        <svg class="faq-chevron" viewBox="0 0 20 20"><path d="M7.293 7.293a1 1 0 011.414 0L12 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"/></svg>
+      </div>
+
+    </div> <!-- faq-section -->
+
+    <div style="margin-top: 35px; color: #65d7a3; font-size: 1.05rem; text-align: center; opacity: 0.66;">
+      <b>Hinweis:</b> DexorEH ist ein reines Fanprojekt. Für Probleme, Ideen oder Support – Discord oder GitHub checken!
     </div>
-  </div>
+
+  </div> <!-- container -->
+
   <script>
-    // Copy Button
+    // Copy button
     document.getElementById('copyBtn').onclick = function() {
-      const str = document.getElementById('loadstring').innerText;
-      navigator.clipboard.writeText(str);
+      const code = document.getElementById('loadstring').innerText;
+      navigator.clipboard.writeText(code);
       this.innerText = 'Copied!';
-      setTimeout(() => { this.innerText = 'Copy'; }, 1200);
+      setTimeout(() => this.innerText = 'Copy', 850);
     };
-    // FAQ Collapsible
+
+    // FAQ collapsible
     document.querySelectorAll('.faq-item').forEach(function(item){
-      item.classList.add('collapsed');
       item.addEventListener('click', function(){
-        if(item.classList.contains('collapsed')) {
-          document.querySelectorAll('.faq-item').forEach(i=>i.classList.add('collapsed'));
-          item.classList.remove('collapsed');
-        } else {
-          item.classList.add('collapsed');
-        }
+        this.classList.toggle('collapsed');
       });
+      item.classList.add('collapsed'); // Start collapsed
     });
-    // Open first FAQ by default
-    setTimeout(()=>{
-      let first = document.querySelector('.faq-item');
-      if(first) first.classList.remove('collapsed');
-    }, 150);
   </script>
 </body>
 </html>
